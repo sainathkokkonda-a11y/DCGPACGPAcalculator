@@ -1,0 +1,313 @@
+<style>
+  .global-gpa-container {
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .global-gpa-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 520px;
+    margin: 20px auto;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(13, 71, 161, 0.15);
+    border: 2px solid #1976d2;
+    overflow: hidden;
+  }
+  
+  .global-gpa-header {
+    background: linear-gradient(135deg, #0d47a1, #1976d2);
+    color: #ffffff;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  
+  .global-gpa-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  
+  .global-gpa-header p {
+    margin: 6px 0 0 0;
+    font-size: 14px;
+    opacity: 0.9;
+  }
+  
+  .global-gpa-body {
+    padding: 24px 20px;
+  }
+  
+  .gpa-row-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 40px;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0d47a1;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #bbdefb;
+  }
+  
+  .subject-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 40px;
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  
+  .global-input, .global-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 2px solid #bbdefb;
+    border-radius: 8px;
+    outline: none;
+    color: #0d47a1;
+    font-weight: 600;
+    box-sizing: border-box;
+    background-color: #ffffff;
+  }
+
+  .global-select {
+    background-color: #e3f2fd;
+    cursor: pointer;
+  }
+  
+  .global-input:focus, .global-select:focus {
+    border-color: #1976d2;
+  }
+
+  .btn-remove {
+    background: #e53935;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    height: 38px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-remove:hover {
+    background: #c62828;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .btn-add {
+    flex: 1;
+    background: #e3f2fd;
+    color: #0d47a1;
+    border: 2px dashed #1976d2;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-add:hover {
+    background: #bbdefb;
+  }
+
+  .btn-calculate {
+    flex: 1;
+    background: #1976d2;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-shadow: 0 4px 10px rgba(25, 118, 210, 0.3);
+  }
+  
+  .btn-calculate:hover {
+    background: #0d47a1;
+  }
+  
+  .result-box {
+    margin-top: 24px;
+    background: #e3f2fd;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #90caf9;
+  }
+  
+  .result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #90caf9;
+  }
+  
+  .result-item:last-child {
+    border-bottom: none;
+  }
+  
+  .result-label {
+    font-size: 14px;
+    color: #1565c0;
+    font-weight: 600;
+  }
+  
+  .result-value {
+    font-size: 16px;
+    color: #0d47a1;
+    font-weight: 700;
+  }
+  
+  .highlight-gpa {
+    background: #1976d2;
+    color: #ffffff;
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .highlight-gpa .result-label {
+    color: #bbdefb;
+  }
+  
+  .highlight-gpa .result-value {
+    color: #ffffff;
+    font-size: 22px;
+  }
+</style>
+
+<div class="global-gpa-container">
+  <div class="global-gpa-card">
+    <div class="global-gpa-header">
+      <h2>GPA / CGPA Calculator</h2>
+      <p>Calculate your semester GPA & percentage easily</p>
+    </div>
+    
+    <div class="global-gpa-body">
+      <div class="gpa-row-header">
+        <span>Subject (Optional)</span>
+        <span>Grade</span>
+        <span>Credits</span>
+        <span></span>
+      </div>
+
+      <div id="subjectList">
+        <!-- Subjects will be rendered here dynamically -->
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-add" onclick="addSubjectRow()">+ Add Subject</button>
+        <button class="btn-calculate" onclick="calculateGPA()">Calculate GPA</button>
+      </div>
+
+      <div class="result-box">
+        <div class="result-item highlight-gpa">
+          <span class="result-label">Calculated GPA / CGPA:</span>
+          <span class="result-value" id="gpaResult">0.00</span>
+        </div>
+        <div class="result-item">
+          <span class="result-label">Approximate Percentage:</span>
+          <span class="result-value" id="percentageResult">0.00%</span>
+        </div>
+        <div class="result-item">
+          <span class="result-label">Total Credits:</span>
+          <span class="result-value" id="totalCreditsResult">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let subjectCount = 0;
+
+  const defaultSubjects = [
+    { name: "Subject 1", grade: "10", credits: 3 },
+    { name: "Subject 2", grade: "9", credits: 4 },
+    { name: "Subject 3", grade: "8", credits: 3 },
+    { name: "Subject 4", grade: "9", credits: 3 }
+  ];
+
+  function addSubjectRow(name = "", gradeVal = "10", creditVal = "3") {
+    subjectCount++;
+    const container = document.getElementById("subjectList");
+    const row = document.createElement("div");
+    row.className = "subject-row";
+    row.id = `sub-row-${subjectCount}`;
+
+    row.innerHTML = `
+      <input type="text" class="global-input sub-name" placeholder="Subject ${subjectCount}" value="${name}">
+      <select class="global-select sub-grade" onchange="calculateGPA()">
+        <option value="10" ${gradeVal === "10" ? "selected" : ""}>O / S (10)</option>
+        <option value="9" ${gradeVal === "9" ? "selected" : ""}>A+ (9)</option>
+        <option value="8" ${gradeVal === "8" ? "selected" : ""}>A (8)</option>
+        <option value="7" ${gradeVal === "7" ? "selected" : ""}>B+ (7)</option>
+        <option value="6" ${gradeVal === "6" ? "selected" : ""}>B (6)</option>
+        <option value="5" ${gradeVal === "5" ? "selected" : ""}>C (5)</option>
+        <option value="0" ${gradeVal === "0" ? "selected" : ""}>F (0)</option>
+      </select>
+      <input type="number" class="global-input sub-credit" value="${creditVal}" min="1" max="10" oninput="calculateGPA()">
+      <button class="btn-remove" onclick="removeSubjectRow('sub-row-${subjectCount}')">×</button>
+    `;
+
+    container.appendChild(row);
+  }
+
+  function removeSubjectRow(rowId) {
+    const row = document.getElementById(rowId);
+    if (row) {
+      row.remove();
+      calculateGPA();
+    }
+  }
+
+  function calculateGPA() {
+    const grades = document.querySelectorAll(".sub-grade");
+    const credits = document.querySelectorAll(".sub-credit");
+
+    let totalPoints = 0;
+    let totalCredits = 0;
+
+    for (let i = 0; i < grades.length; i++) {
+      const grade = parseFloat(grades[i].value);
+      const credit = parseFloat(credits[i].value);
+
+      if (!isNaN(grade) && !isNaN(credit) && credit > 0) {
+        totalPoints += grade * credit;
+        totalCredits += credit;
+      }
+    }
+
+    if (totalCredits === 0) {
+      document.getElementById("gpaResult").innerText = "0.00";
+      document.getElementById("percentageResult").innerText = "0.00%";
+      document.getElementById("totalCreditsResult").innerText = "0";
+      return;
+    }
+
+    const gpa = totalPoints / totalCredits;
+    // Standard percentage conversion: (GPA - 0.75) * 10 or GPA * 9.5 based on university (using standard GPA * 9.5)
+    const percentage = gpa * 9.5;
+
+    document.getElementById("gpaResult").innerText = gpa.toFixed(2);
+    document.getElementById("percentageResult").innerText = percentage.toFixed(2) + "%";
+    document.getElementById("totalCreditsResult").innerText = totalCredits;
+  }
+
+  // Initial load
+  defaultSubjects.forEach(s => addSubjectRow(s.name, s.grade, s.credits));
+  calculateGPA();
+</script>
